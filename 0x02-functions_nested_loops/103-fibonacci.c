@@ -1,34 +1,28 @@
-#include"main.h"
+#include <stdio.h>
 
 /**
- * main - Entry point
- *
- * Description: Prints the sum of even-valued
- *		Fibonacci sequence not exceed
- *		4million
- *
- * Return: Always 0 (Success)
-*/
-
+ * main - prints the sum of the even-valued terms
+ * Return: 0 if executed successfully
+ */
 int main(void)
 {
-	unsigned long fib1 = 0, fib2 = 1, sum;
-	float total_sum;
+	unsigned long int a = 1;
+	unsigned long int b = 2;
+	unsigned long int c;
+	unsigned long int sum = 0;
 
-	while (1)
+	while (a < 4000000)
 	{
-		sum = fib1 + fib2;
+		if ((a % 2) == 0)
+		{
+			sum += a;
+		}
 
-		if (sum > 4000000)
-			break;
-
-		if ((sum % 2) == 0)
-			total_sum += sum;
-
-		fib1 = fib2;
-		fib2 = sum;
+		c = a + b;
+		a = b;
+		b = c;
 	}
-	printf("%.0f\n", total_sum);
+	printf("%ld\n", sum);
 
 	return (0);
 }
