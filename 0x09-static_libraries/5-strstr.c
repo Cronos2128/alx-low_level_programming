@@ -1,28 +1,36 @@
-#include "main.h"
 /**
- * _strstr - check the code for Holberton School students.
- *@haystack:do something
- *@needle:do something more
- * Return: Always 0.
- */
+ * _strstr - a function that locates a substring
+ *
+ * @haystack: input string to search for matching
+ *            substrings
+ * @needle: subtring to search for
+ *
+ * Return: a pointer to the beginning
+ *         of the located substring or
+ *         NULL if substring is not found
+*/
+
 char *_strstr(char *haystack, char *needle)
 {
-	while (*haystack)
-	{
-		char *Begin = haystack;
-		char *pattern = needle;
+	/**
+	 * we initialize a helping variables
+	 * to assist in returning one of
+	 * our parameters pointers haystack
+	*/
+	char *h, *n;
 
-		while (*haystack && *pattern && *haystack == *pattern)
+	while (*haystack != '\0')
+	{
+		h = haystack;
+		n = needle;
+		while (*n != '\0' && *haystack == *n)
 		{
 			haystack++;
-			pattern++;
+			n++;
 		}
-
-		if (!*pattern)
-		{
-			return (Begin);
-		}
-		haystack = Begin + 1;
+		if (!*n)
+			return (h);
+		haystack++;
 	}
-	return (0);
+	return ('\0');
 }

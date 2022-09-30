@@ -1,40 +1,35 @@
-#include "main.h"
-
 /**
- * _strspn - Function that gets the length of a prefix substring
- * @s: String to be scanned
- * @accept: String containing the characters to match
- * Return: Number of occurrences
- */
+ * _strspn - a function that gets the
+ *           length of a prexif substring
+ *
+ * @s: pointer to string input
+ * @accept: substring prefix to look for
+ *
+ * Return: the number of bytes in the initial segment
+*/
 
 unsigned int _strspn(char *s, char *accept)
-
 {
-	unsigned int i, j, k, brk = 0, count = 0;
+	int i, j, f;
 
-	for (k = 0; accept[k] != '\0'; k++)
-		;
-
-	for (i = 0; s[i] != '\0'; i++)
+	i = 0;
+	while (s[i] != '\0')
 	{
-		if (brk == 1)
-			break;
-
-		for (j = 0; j < k; j++)
+		j = 0;
+		f = 1; /*flag status*/
+		while (accept[j] != '\0')
 		{
 			if (s[i] == accept[j])
 			{
-				count++;
+				f = 0; /*success*/
 				break;
 			}
-
-			if (s[i] != accept[k - 1] && j == k - 1)
-			{
-				brk++;
-				break;
-			}
+			j++;
 		}
+		if (f == 1)
+			break;
+		i++;
 	}
 
-	return (count);
+	return (i);
 }
