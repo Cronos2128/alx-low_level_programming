@@ -1,30 +1,32 @@
 #include "3-calc.h"
-#include <string.h>
+#include <stdlib.h>
 
 /**
- * get_op_func - select the correct function to perform an operation
- * @s: the operation to perform
- *
- * Return: If s is not one of the defined operators ('+', '-', '*', '/', '%'),
- * return NULL. Otherwise, return a pointer to the appropriate function.
+ * get_op_func - selects the correct function
+ * to perform the operation asked by the user
+ * @s: operator passed as argument to the program
+ * Return: pointer to the function that corresponds
+ * to the operator given as a parameter
  */
+
 int (*get_op_func(char *s))(int, int)
 {
-	int i = 0;
 	op_t ops[] = {
-		{ "+", op_add },
-		{ "-", op_sub },
-		{ "*", op_mul },
-		{ "/", op_div },
-		{ "%", op_mod },
-		{ NULL, NULL }
-	};
+		{"+", op_add},
+		{"-", op_sub},
+		{"*", op_mul},
+		{"/", op_div},
+		{"%", op_mod},
+		{NULL, NULL}};
 
-	while (s && ops[i].op != NULL)
+	int i;
+
+	i = 0;
+	while (i < 5)
 	{
-		if (!strcmp(s, ops[i].op))
+		if (*s == ops[i].op[0])
 			return (ops[i].f);
-		++i;
+		i++;
 	}
 
 	return (NULL);

@@ -2,16 +2,16 @@
 #include <stdlib.h>
 
 /**
- * main - print opcodes of this function
- * @argc: the size of the argument vector
- * @argv: the argument vector
- *
- * Return: Always 0
+ * main - prints the opcodes of its own main function
+ * @argc: number of command line arguments
+ * @argv: array containing the command line arguments
+ * Return: 0 if executed successfully and 1 otherwise
  */
+
 int main(int argc, char *argv[])
 {
-	int b;
-	char *mem = (char *) main;
+	int num_bytes, i;
+	char *op_codes = (char *)&main;
 
 	if (argc != 2)
 	{
@@ -19,16 +19,22 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	b = atoi(argv[1]);
+	num_bytes = atoi(argv[1]);
 
-	if (b < 0)
+	if (num_bytes < 0)
 	{
 		printf("Error\n");
 		exit(2);
 	}
 
-	while (b--)
-		printf("%02x%c", *mem++ & 0xff, b ? ' ' : '\n');
+	for (i = 0; i < num_bytes; i++)
+	{
+		printf("%.2hhx", op_codes[i]);
+
+		if (i < num_bytes - 1)
+			printf(" ");
+	}
+	printf("\n");
 
 	return (0);
 }
