@@ -1,84 +1,92 @@
 #include "variadic_functions.h"
 
+
 /**
- * print_char - prints a char
- * @valist: valist
+ * print_char - print a character
+ * @args: the va_list with the character to print as it's next element
+ *
+ * Return: the number of bytes printed
  */
-void print_char(va_list valist)
+int print_char(va_list args)
 {
-	printf("%c", va_arg(valist, int));
+	return (printf("%c", va_arg(args, int)));
 }
 
+
 /**
- * print_int - prints an int
- * @valist: valist
+ * print_float - print a float
+ * @args: the va_list with the float to print as it's next element
+ *
+ * Return: the number of bytes printed
  */
-void print_int(va_list valist)
+int print_float(va_list args)
 {
-	printf("%d", va_arg(valist, int));
+	return (printf("%f", va_arg(args, double)));
 }
 
+
 /**
- * print_float - prints a float
- * @valist: valist
+ * print_int - print an integer
+ * @args: the va_list with the integer to print as it's next element
+ *
+ * Return: the number of bytes printed
  */
-void print_float(va_list valist)
+int print_int(va_list args)
 {
-	printf("%.6f", va_arg(valist, double));
+	return (printf("%i", va_arg(args, int)));
 }
 
+
 /**
- * print_string - prints an string
- * @valist: valist
+ * print_str - print a string
+ * @args: the va_list with the string to print as it's next element
+ *
+ * Return: the number of bytes printed
  */
-void print_string(va_list valist)
+int print_str(va_list args)
 {
-	char *s;
+	const char *str = va_arg(args, const char *);
 
-	s = va_arg(valist, char *);
-
-	if (s == NULL)
-	{
-		printf("(nil)");
-		return;
-	}
-	printf("%s", s);
+	if (!str)
+		str = "(nil)";
+	return (printf("%s", str));
 }
 
+
 /**
- * print_all - prints arguments type char, int, string, float
- * @format: a list of types of arguments passed to the function
- * Return: Nothing
+ * print_all - print anything
+ * @format: a format string listing the types of the proceeding arguments
+ * @...: the values to print
  */
-void print_all(const char *const format, ...)
+void print_all(const char * const format, ...)
 {
-	int i, j = 0;
 	va_list args;
-	char *separator = "";
-
-	char_type chars[] = {{'c', print_char},
-						 {'i', print_int},
-						 {'f', print_float},
-						 {'s', print_string},
-						 {'\0', NULL}};
+	print_fn_t fn_list[] = {
+		{'c', print_char},
+		{'f', print_float},
+		{'i', print_int},
+		{'s', print_str},
+		{ 0,  NULL}
+	};
+	char *sep[] = {"", ", "};
+	unsigned int bytes = 0, fn_index = 0, format_index = 0;
 
 	va_start(args, format);
-
-	while (format != NULL && format[j] != '\0')
+	while (format && format[format_index])
 	{
-		i = 0;
-		while (chars[i].letter != '\0')
+		fn_index = 0;
+		while (fn_list[fn_index].format)
 		{
-			if (chars[i].letter == format[j])
+			if (format[format_index] == fn_list[fn_index].format)
 			{
-				printf("%s", separator);
-				chars[i].func(args);
-				separator = ", ";
+				printf("%s", sep[bytes != 0]);
+				bytes += fn_list[fn_index].fn(args);
+				break;
 			}
-			i++;
+			++fn_index;
 		}
-		j++;
+		++format_index;
 	}
-	va_end(args);
 	printf("\n");
+	va_end(args);
 }
